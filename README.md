@@ -1,4 +1,4 @@
-# 📦 UniCrate
+# UniCrate
 
 **Your campus. Every delivery.**
 
