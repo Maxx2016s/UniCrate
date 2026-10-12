@@ -32,8 +32,11 @@ Future enhancements may include automated parcel-label data extraction, intellig
 ## 👥 Contributors
 
 Shaurya Negi
+
 Arpan Kaur
+
 Vibhu Kakkar
+
 Manya Juneja
 
 ## 📌 Project Status
