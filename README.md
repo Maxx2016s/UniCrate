@@ -247,11 +247,16 @@ UniCrate is developed collaboratively by a team of four members.
 
 ## 🚀 Future Improvements
 
-- Complete frontend integration.
-- API testing using Postman.
-- Improve dashboard UI and user experience.
-- Add parcel status notifications.
-- Add more detailed parcel analytics.
+We aim to make UniCrate smarter and more efficient by introducing AI-powered capabilities and additional features.
+
+- **AI-Powered Parcel Assistant**
+- **Smart Parcel Notifications:** 
+- **AI-Based Analytics**
+- **Predictive Analytics**
+- **Smart Search:** Introduce AI-powered natural language search so users can find parcel information using conversational queries.
+- **Improved Dashboard:** Develop an advanced dashboard with interactive visualizations and operational insights.
+- **Email Integration:** Send automated email notifications for parcel arrivals and collection confirmations.
+- **Enhanced User Experience:** Improve the frontend with a responsive interface and a smoother user experience.
 
 ## 📌 Project Status
 
