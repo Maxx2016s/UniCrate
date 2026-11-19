@@ -8,9 +8,11 @@ const express = require("express");
 
 const { connectDB } = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
-// Parcel routes are added later, once parcelRoutes.js is written (see notes).
+const parcelRoutes = require("./routes/parcelRoutes");
+
 
 const app = express();
+
 
 // Fail early with a clear message if the .env file is incomplete
 const requiredEnv = ["DATABASE_URL", "JWT_SECRET"];
@@ -24,6 +26,7 @@ if (missingEnv.length > 0) {
 
 // Middleware
 app.use(express.json());
+app.use("/api/parcels", parcelRoutes);
 
 // API routes
 app.use("/api/auth", authRoutes);
