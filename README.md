@@ -1,46 +1,268 @@
-# UniCrate
+# 📦 UniCrate — University Parcel Management System
 
-**Your campus. Every delivery.**
+**A centralized digital parcel management system designed to simplify parcel tracking and collection within a university campus.**
 
-UniCrate is a campus parcel management system designed to digitize the manual register-based process of recording parcels arriving at university gates.
+UniCrate replaces traditional manual parcel registers with a digital platform where university staff can register incoming parcels, manage parcel records, and track collection status, while students can view the status of their own parcels.
 
-The goal is to simplify parcel registration, help students track incoming deliveries, and make parcel collection more organized and efficient.
+---
 
-## 🎯 The Problem 
+## 🎯 Project Objectives
 
-Our University relies on physical registers to record parcels received for students. This makes searching records time-consuming, tracking uncollected parcels difficult, and analyzing delivery data challenging.
+- Digitize the university's manual parcel registration process.
+- Maintain organized and accessible parcel records.
+- Allow students to track their own parcels.
+- Enable staff to manage parcel registration and collection.
+- Provide role-based access to ensure data privacy and security.
 
-UniCrate aims to replace this manual process with a centralized digital system.
+## ✨ Key Features
 
-## ✨ Planned Features
-
-- Digital parcel registration and inventory management
-- Student-wise parcel tracking
-- Parcel search and filtering
-- Parcel collection and status tracking
-- Separate interfaces for students and gate staff
-- Data storage and analytics
+- **User Authentication:** Secure registration and login using JWT.
+- **Password Security:** Passwords are hashed using bcryptjs.
+- **Role-Based Access Control:** Three user roles — ADMIN, EDITOR, and VIEWER.
+- **Parcel Registration:** Staff can register incoming parcels.
+- **Unique Tracking IDs:** Every parcel receives a unique tracking ID.
+- **Parcel Management:** View, update, search, filter, and delete parcel records.
+- **Collection Tracking:** Staff can mark parcels as collected, recording the collection time and staff member.
+- **Student Privacy:** Students can only access parcels associated with their own registration number.
+- **Dashboard Statistics:** Provides parcel counts and recently registered parcels.
 
 ## 🛠️ Tech Stack
 
-*To be finalized as development progresses.*
+| Technology | Purpose |
+|---|---|
+| Node.js | Backend runtime |
+| Express.js | Backend framework and REST APIs |
+| MongoDB Atlas | Cloud database |
+| Prisma ORM | Database access and schema management |
+| JWT | Authentication |
+| bcryptjs | Password hashing |
+| dotenv | Environment variable management |
+| HTML, CSS, JavaScript | Frontend (planned/under development) |
 
-## 🚀 Future Scope
+## 👥 User Roles
 
-Future enhancements may include automated parcel-label data extraction, intelligent notifications, parcel arrival predictions, and AI-powered analytics.
+| Role | Permissions |
+|---|---|
+| ADMIN | Manage users, manage parcels, and access administrative operations |
+| EDITOR | Register and manage parcels, and create VIEWER accounts |
+| VIEWER | View parcels associated with their own registration number |
 
-## 👥 Contributors
+The first registered account automatically receives the ADMIN role.
 
-Shaurya Negi
+## 🗄️ Database Design
 
-Arpan Kaur
+UniCrate currently uses two main Prisma models.
 
-Vibhu Kakkar
+### 1. User
 
-Manya Juneja
+Stores user information and authentication details.
+
+- id
+- name
+- email
+- password
+- registrationNumber
+- role
+- createdAt
+- updatedAt
+
+### 2. Parcel
+
+Stores parcel information and collection details.
+
+- id
+- trackingId
+- studentName
+- studentRegistrationNumber
+- studentEmail
+- courierName
+- description
+- arrivalDate
+- status
+- collectedAt
+- registeredById
+- collectedById
+- createdAt
+- updatedAt
+
+### Relationships
+
+- A user can register multiple parcels.
+- A user can collect multiple parcels.
+- Every parcel is associated with the staff member who registered it.
+- A collected parcel records the staff member who marked it as collected.
+
+## 🔌 API Overview
+
+Base URL:
+
+`http://localhost:5000`
+
+### Authentication APIs
+
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/api/auth/register` | Register a user |
+| POST | `/api/auth/login` | Authenticate a user |
+| GET | `/api/auth/me` | Get the logged-in user's details |
+
+### Parcel APIs
+
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/api/parcels` | Get parcels |
+| GET | `/api/parcels/:id` | Get a parcel by ID |
+| POST | `/api/parcels` | Register a parcel |
+| PUT | `/api/parcels/:id` | Update parcel details |
+| PATCH | `/api/parcels/:id/collect` | Mark a parcel as collected |
+| DELETE | `/api/parcels/:id` | Delete a parcel |
+| GET | `/api/parcels/stats` | Get parcel dashboard statistics |
+
+Protected endpoints require a JWT bearer token.
+
+## 📁 Project Structure
+
+```text
+UniCrate/
+│
+├── backend/
+│   ├── prisma/
+│   │   └── schema.prisma
+│   │
+│   ├── src/
+│   │   ├── config/
+│   │   │   └── db.js
+│   │   │
+│   │   ├── controllers/
+│   │   │   ├── authController.js
+│   │   │   └── parcelController.js
+│   │   │
+│   │   ├── middleware/
+│   │   │   ├── authMiddleware.js
+│   │   │   └── roleMiddleware.js
+│   │   │
+│   │   ├── routes/
+│   │   │   ├── authRoutes.js
+│   │   │   └── parcelRoutes.js
+│   │   │
+│   │   ├── utils/
+│   │   │   └── generateTrackingId.js
+│   │   │
+│   │   ├── public/
+│   │   │
+│   │   └── index.js
+│   │
+│   ├── .env.example
+│   ├── package.json
+│   └── package-lock.json
+│
+└── README.md
+```
+
+## ⚙️ Installation and Setup
+
+### Prerequisites
+
+- Node.js and npm
+- MongoDB Atlas account
+- Git
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/Maxx2016s/UniCrate.git
+cd UniCrate
+```
+
+### 2. Navigate to the backend
+
+```bash
+cd backend
+```
+
+### 3. Install dependencies
+
+```bash
+npm install
+```
+
+### 4. Configure environment variables
+
+Create a `.env` file inside the backend directory.
+
+Add the following variables:
+
+```env
+DATABASE_URL="your_mongodb_atlas_connection_string"
+JWT_SECRET="your_secret_key"
+JWT_EXPIRES_IN="1d"
+PORT=5000
+```
+
+Replace the placeholder values with your own configuration.
+
+**Important:** Never commit your `.env` file or expose database credentials and JWT secrets publicly.
+
+### 5. Generate Prisma Client
+
+```bash
+npx prisma generate
+```
+
+### 6. Sync the database schema
+
+```bash
+npx prisma db push
+```
+
+### 7. Start the server
+
+```bash
+node src/index.js
+```
+
+The backend should run at:
+
+`http://localhost:5000`
+
+## 👨‍💻 Team Contributions
+
+UniCrate is developed collaboratively by a team of four members.
+
+| Team Member | Contributions |
+|---|---|
+| **Arpan Kaur** | Database schema design using Prisma, MongoDB Atlas integration, shared Prisma client configuration, server entry point, tracking ID generation, and backend integration/testing. |
+| **Manya** | Authentication controller and authentication routes, including user registration, login, password hashing, and JWT generation. |
+| **Vibhu** | Authentication middleware and role-based authorization middleware for protected routes and access control. |
+| **Shaurya** | Parcel controller and parcel routes, including parcel registration, retrieval, updating, collection, deletion, search, filtering, and dashboard statistics. |
+
+## 🔐 Security Considerations
+
+- Passwords are stored as bcrypt hashes.
+- JWT tokens are used to authenticate protected requests.
+- User roles determine access permissions.
+- Students cannot access other students' parcel records.
+- Password hashes are excluded from API responses.
+- Environment variables are used for sensitive configuration.
+
+## 🚀 Future Improvements
+
+- Complete frontend integration.
+- API testing using Postman.
+- Improve dashboard UI and user experience.
+- Add parcel status notifications.
+- Add more detailed parcel analytics.
 
 ## 📌 Project Status
 
-**Currently in development.**
+**Backend development:** Core implementation completed; API integration and testing in progress.
 
-Built as an academic capstone project combining Advanced Programming (AP) and Data Engineering (DE).
+**Frontend development:** Under development.
+
+---
+
+## 👥 Team UniCrate
+
+Built with collaboration, code, and a goal to make university parcel management simpler.
+
+**Repository:** [UniCrate on GitHub](https://github.com/Maxx2016s/UniCrate)
