@@ -4,7 +4,7 @@ const express = require("express");
 const router = express.Router();
 
 const { prisma } = require("../config/db");
-const { register, login, getMe } = require("../controllers/authController");
+const { register, login, getMe } = require("../Controllers/authController");
 const { protect } = require("../middleware/authMiddleware");
 const { authorizeRoles } = require("../middleware/roleMiddleware");
 
