@@ -1,5 +1,6 @@
 // src/controllers/parcelController.js
 // Parcel CRUD, search/filter, collection and dashboard stats.
+
 const { prisma } = require("../config/db");
 const generateTrackingId = require("../utils/generateTrackingId");
 
@@ -408,4 +409,12 @@ const getParcelStats = async (req, res) => {
   }
 };
 
-module.exports = {createParcel, getParcels, getParcelById, updateParcel, collectParcel, deleteParcel, getParcelStats,};
+module.exports = {
+  createParcel,
+  getParcels,
+  getParcelById,
+  updateParcel,
+  collectParcel,
+  deleteParcel,
+  getParcelStats,
+};
