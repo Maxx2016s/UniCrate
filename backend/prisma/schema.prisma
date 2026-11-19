@@ -1,0 +1,69 @@
+// UniCrate database schema (Prisma + MongoDB Atlas)
+// Prisma version: 6.19.x (v7 does not support MongoDB yet)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  EDITOR
+  VIEWER
+}
+
+enum ParcelStatus {
+  PENDING
+  COLLECTED
+}
+
+model User {
+  id                 String   @id @default(auto()) @map("_id") @db.ObjectId
+  name               String
+  email              String   @unique
+  password           String
+  // Required for VIEWER (students), optional for staff.
+  // Uniqueness is checked in authController, not by the database,
+  // because a unique index would reject several staff with no number.
+  registrationNumber String?
+  role               Role     @default(VIEWER)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  registeredParcels Parcel[] @relation("RegisteredBy")
+  collectedParcels  Parcel[] @relation("CollectedBy")
+
+  @@index([registrationNumber])
+  @@map("users")
+}
+
+model Parcel {
+  id                        String       @id @default(auto()) @map("_id") @db.ObjectId
+  trackingId                String       @unique
+  studentName               String
+  studentRegistrationNumber String
+  studentEmail              String
+  courierName               String
+  description               String?
+  arrivalDate               DateTime     @default(now())
+  status                    ParcelStatus @default(PENDING)
+  collectedAt               DateTime?
+  createdAt                 DateTime     @default(now())
+  updatedAt                 DateTime     @updatedAt
+
+  // Staff member who registered the parcel
+  registeredById String @db.ObjectId
+  registeredBy   User   @relation("RegisteredBy", fields: [registeredById], references: [id])
+
+  // Staff member who marked it collected (set by PATCH /:id/collect)
+  collectedById String? @db.ObjectId
+  collectedBy   User?   @relation("CollectedBy", fields: [collectedById], references: [id])
+
+  @@index([studentRegistrationNumber])
+  @@index([status])
+  @@map("parcels")
+}
