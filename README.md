@@ -206,20 +206,22 @@ Replace the placeholder values with your own configuration.
 ### 5. Generate Prisma Client
 
 ```bash
-npx prisma generate
+npm run db:generate
 ```
 
 ### 6. Sync the database schema
 
 ```bash
-npx prisma db push
+npm run db:push
 ```
 
 ### 7. Start the server
 
 ```bash
-node src/index.js
+npm run dev
 ```
+
+Use `npm start` to run the server without automatic restarts.
 
 The backend should run at:
 
