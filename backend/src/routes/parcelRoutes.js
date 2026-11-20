@@ -12,7 +12,7 @@ const {
   collectParcel,
   deleteParcel,
   getParcelStats,
-} = require("../Controllers/parcelController");
+} = require("../controllers/parcelController");
 const { protect } = require("../middleware/authMiddleware");
 const { authorizeRoles } = require("../middleware/roleMiddleware");
 
