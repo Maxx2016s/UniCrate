@@ -96,7 +96,7 @@ Stores parcel information and collection details.
 
 Base URL:
 
-`http://localhost:5000`
+`http://localhost:3000`
 
 ### Authentication APIs
 
@@ -196,7 +196,7 @@ Add the following variables:
 DATABASE_URL="your_mongodb_atlas_connection_string"
 JWT_SECRET="your_secret_key"
 JWT_EXPIRES_IN="1d"
-PORT=5000
+PORT=3000
 ```
 
 Replace the placeholder values with your own configuration.
@@ -225,7 +225,7 @@ Use `npm start` to run the server without automatic restarts.
 
 The backend should run at:
 
-`http://localhost:5000`
+`http://localhost:3000`
 
 ## 👨‍💻 Team Contributions
 
