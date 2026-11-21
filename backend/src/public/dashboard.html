@@ -26,6 +26,7 @@
           <a class="nav-link nav-link-active" href="/dashboard.html" aria-current="page">Overview</a>
           <a class="nav-link" href="#parcels">Parcels</a>
           <button id="sidebar-register" class="nav-link nav-link-button" type="button" hidden>Register parcel</button>
+          <button id="sidebar-create-account" class="nav-link nav-link-button" type="button" hidden>Create account</button>
         </nav>
 
         <div class="sidebar-bottom">
@@ -132,6 +133,40 @@
         <div class="dialog-actions">
           <button id="cancel-dialog" class="button button-quiet" type="button">Cancel</button>
           <button id="save-parcel" class="button button-primary" type="submit">Save parcel</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog id="account-dialog" class="register-dialog" aria-labelledby="account-title">
+      <form id="account-form" class="dialog-form">
+        <div class="dialog-heading">
+          <div>
+            <p class="eyebrow">CAMPUS ACCOUNTS</p>
+            <h2 id="account-title">Create an account</h2>
+          </div>
+          <button id="close-account-dialog" class="icon-button" type="button" aria-label="Close">×</button>
+        </div>
+        <div class="dialog-fields">
+          <label for="account-name">Full name</label>
+          <input id="account-name" name="name" autocomplete="name" required />
+          <label for="account-email">Campus email</label>
+          <input id="account-email" name="email" type="email" autocomplete="email" required />
+          <label for="account-password">Temporary password</label>
+          <input id="account-password" name="password" type="password" autocomplete="new-password" minlength="6" required />
+          <label for="account-role">Role</label>
+          <select id="account-role" name="role">
+            <option value="VIEWER">Student (Viewer)</option>
+            <option value="EDITOR">Parcel desk staff (Editor)</option>
+            <option value="ADMIN">Administrator</option>
+          </select>
+          <label id="account-registration-label" for="account-registration-number">Student registration number</label>
+          <input id="account-registration-number" name="registrationNumber" autocomplete="off" />
+        </div>
+        <p class="dialog-note">Students need a registration number so their parcel view stays limited to their own parcels.</p>
+        <p id="account-message" class="form-message" role="alert" aria-live="polite"></p>
+        <div class="dialog-actions">
+          <button id="cancel-account-dialog" class="button button-quiet" type="button">Cancel</button>
+          <button id="save-account" class="button button-primary" type="submit">Create account</button>
         </div>
       </form>
     </dialog>
