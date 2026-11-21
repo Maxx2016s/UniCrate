@@ -137,33 +137,26 @@ UniCrate/
 │   ├── src/
 │   │   ├── config/
 │   │   │   └── db.js
-│   │   │
 │   │   ├── controllers/
 │   │   │   ├── authController.js
 │   │   │   └── parcelController.js
-│   │   │
 │   │   ├── middleware/
 │   │   │   ├── authMiddleware.js
 │   │   │   └── roleMiddleware.js
-│   │   │
 │   │   ├── routes/
 │   │   │   ├── authRoutes.js
 │   │   │   └── parcelRoutes.js
-│   │   │
 │   │   ├── utils/
 │   │   │   └── generateTrackingId.js
-│   │   │
-│   │   ├── public/
-│   │   │   ├── css/
-│   │   │   │   └── style.css
-│   │   │   ├── js/
-│   │   │   │   ├── dashboard.js
-│   │   │   │   └── login.js
-│   │   │   ├── dashboard.html
-│   │   │   ├── index.html
-│   │   │   └── login.html
-│   │   │
 │   │   └── index.js
+│   │
+│   ├── public/
+│   │   ├── css/style.css
+│   │   ├── js/dashboard.js
+│   │   ├── js/login.js
+│   │   ├── dashboard.html
+│   │   ├── index.html
+│   │   └── login.html
 │   │
 │   ├── .env.example
 │   ├── package.json
@@ -247,6 +240,19 @@ Use `npm start` to run the server without automatic restarts.
 The backend should run at:
 
 `http://localhost:3000`
+
+## 🚀 Deployment Preparation
+
+UniCrate is served by one Express app: the same Node service hosts the API and the frontend. For deployment, configure the hosting service to use `backend` as its project root, install dependencies with `npm install`, generate Prisma Client with `npm run db:generate`, and start the app with `npm start`.
+
+Set these environment variables in the hosting provider's settings:
+
+- `DATABASE_URL`: the MongoDB Atlas connection string for the `UniCrate` database.
+- `JWT_SECRET`: a long, private random value. Do not reuse the example value.
+- `JWT_EXPIRES_IN`: optional; defaults to `1d`.
+- `PORT`: use the port supplied by the hosting provider; the app defaults to `3000` for local use.
+
+Allow the deployed service to reach the Atlas cluster through Atlas Network Access. Do not commit `.env` or run `npm run db:seed` automatically during deployment; the seed script is only for deliberately adding the fictional demo accounts and parcels. Choose the hosting provider before adding provider-specific deployment files or settings.
 
 ## 👨‍💻 Team Contributions
 

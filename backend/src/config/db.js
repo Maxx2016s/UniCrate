@@ -1,24 +1,28 @@
-// src/config/db.js
 // Creates the shared Prisma client and checks the database connection.
 
 const { PrismaClient } = require("@prisma/client");
 
-// One client for the whole app. Every file imports this same instance.
+// One client and one connection check are shared by this app instance.
 const prisma = new PrismaClient();
+let connectionPromise;
 
-const connectDB = async () => {
-  try {
-    await prisma.$connect();
+const connectDB = () => {
+  if (!connectionPromise) {
+    connectionPromise = (async () => {
+      await prisma.$connect();
 
-    // Real check: ask MongoDB to answer a ping, so wrong credentials
-    // or a blocked IP show up now instead of on the first request.
-    await prisma.$runCommandRaw({ ping: 1 });
-
-    console.log("Database connected (MongoDB Atlas via Prisma)");
-  } catch (error) {
-    console.error("Database connection failed:", error.message);
-    process.exit(1);
+      // Ask MongoDB to answer a ping, so bad credentials or network access
+      // problems are reported before the first database operation.
+      await prisma.$runCommandRaw({ ping: 1 });
+      console.log("Database connected (MongoDB Atlas via Prisma)");
+    })().catch((error) => {
+      // Allow a later request to retry if the first connection attempt failed.
+      connectionPromise = undefined;
+      throw error;
+    });
   }
+
+  return connectionPromise;
 };
 
 module.exports = { prisma, connectDB };

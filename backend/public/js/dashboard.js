@@ -14,6 +14,22 @@ const accountRegistrationNumber = document.querySelector("#account-registration-
 let currentUser = null;
 let searchTimer;
 
+const updateActiveNavigation = () => {
+  const overviewLink = document.querySelector('.side-nav .nav-link[href="/dashboard.html"]');
+  const parcelsLink = document.querySelector('.side-nav .nav-link[href="#parcels"]');
+  const parcelsSelected = window.location.hash === "#parcels";
+
+  overviewLink.classList.toggle("nav-link-active", !parcelsSelected);
+  parcelsLink.classList.toggle("nav-link-active", parcelsSelected);
+  overviewLink.toggleAttribute("aria-current", !parcelsSelected);
+  parcelsLink.toggleAttribute("aria-current", parcelsSelected);
+  if (parcelsSelected) parcelsLink.setAttribute("aria-current", "location");
+  else overviewLink.setAttribute("aria-current", "page");
+};
+
+window.addEventListener("hashchange", updateActiveNavigation);
+updateActiveNavigation();
+
 if (!token) {
   window.location.replace("/login.html");
 }
