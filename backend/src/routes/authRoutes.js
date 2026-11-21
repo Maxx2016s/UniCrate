@@ -4,7 +4,12 @@ const express = require("express");
 const router = express.Router();
 
 const { prisma } = require("../config/db");
-const { register, login, getMe } = require("../controllers/authController");
+const {
+  register,
+  login,
+  getMe,
+  getSetupStatus,
+} = require("../controllers/authController");
 const { protect } = require("../middleware/authMiddleware");
 const { authorizeRoles } = require("../middleware/roleMiddleware");
 
@@ -34,6 +39,9 @@ const registerGate = async (req, res, next) => {
 
 // POST /api/auth/register
 router.post("/register", registerGate, register);
+
+// GET /api/auth/setup-status
+router.get("/setup-status", getSetupStatus);
 
 // POST /api/auth/login
 router.post("/login", login);
