@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f8f7f4" />
+    <title>Parcel desk | UniCrate</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <script src="/js/dashboard.js" defer></script>
+  </head>
+  <body class="dashboard-page">
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Main navigation">
+        <a class="brand" href="/dashboard.html" aria-label="UniCrate overview">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 32 32" fill="none">
+              <path d="M5 10.5 16 5l11 5.5v11L16 27 5 21.5v-11Z" />
+              <path d="m5.5 10.8 10.5 5.4 10.5-5.4M16 16.5V27M10.5 8l11 5.7" />
+            </svg>
+          </span>
+          <span class="brand-name">UniCrate</span>
+        </a>
+
+        <p class="nav-caption">PARCEL DESK</p>
+        <nav class="side-nav">
+          <a class="nav-link nav-link-active" href="/dashboard.html" aria-current="page">Overview</a>
+          <a class="nav-link" href="#parcels">Parcels</a>
+          <button id="sidebar-register" class="nav-link nav-link-button" type="button" hidden>Register parcel</button>
+        </nav>
+
+        <div class="sidebar-bottom">
+          <div class="account-chip">
+            <span id="user-initials" class="avatar" aria-hidden="true">U</span>
+            <span class="account-copy">
+              <strong id="user-name">Loading account</strong>
+              <small id="user-role">—</small>
+            </span>
+          </div>
+          <button id="logout-button" class="nav-link nav-link-button logout-link" type="button">Sign out</button>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="page-header">
+          <div>
+            <p class="breadcrumb">PARCEL DESK <span aria-hidden="true">/</span> OVERVIEW</p>
+            <h1 id="greeting">Your parcel desk</h1>
+            <p id="today-label" class="page-subtitle"></p>
+          </div>
+          <button id="register-button" class="button button-primary" type="button" hidden>Register a parcel</button>
+        </header>
+
+        <p id="dashboard-message" class="notice" role="status" aria-live="polite" hidden></p>
+
+        <section class="stats-grid" aria-label="Parcel summary">
+          <article class="stat-card stat-peach">
+            <span class="stat-label">Total parcels</span>
+            <strong id="stat-total" class="stat-value">—</strong>
+          </article>
+          <article class="stat-card stat-blue">
+            <span class="stat-label">Awaiting pickup</span>
+            <strong id="stat-pending" class="stat-value">—</strong>
+          </article>
+          <article class="stat-card stat-green">
+            <span class="stat-label">Collected</span>
+            <strong id="stat-collected" class="stat-value">—</strong>
+          </article>
+        </section>
+
+        <section id="parcels" class="panel parcel-panel" aria-labelledby="parcels-title">
+          <div class="panel-heading">
+            <div>
+              <h2 id="parcels-title">Recent parcels</h2>
+              <p id="parcel-caption" class="panel-subtitle">The latest updates from the parcel desk.</p>
+            </div>
+            <form id="search-form" class="search-controls" role="search">
+              <label class="visually-hidden" for="parcel-search">Search parcels</label>
+              <input id="parcel-search" type="search" placeholder="Search name, student ID or tracking ID" />
+              <label class="visually-hidden" for="status-filter">Filter by status</label>
+              <select id="status-filter">
+                <option value="">All statuses</option>
+                <option value="PENDING">Awaiting pickup</option>
+                <option value="COLLECTED">Collected</option>
+              </select>
+            </form>
+          </div>
+
+          <div class="table-scroll">
+            <table class="parcel-table">
+              <thead>
+                <tr>
+                  <th scope="col">Tracking ID</th>
+                  <th scope="col">Student</th>
+                  <th scope="col">Courier</th>
+                  <th scope="col">Arrived</th>
+                  <th scope="col">Status</th>
+                  <th scope="col"><span class="visually-hidden">Actions</span></th>
+                </tr>
+              </thead>
+              <tbody id="parcel-rows">
+                <tr><td class="table-empty" colspan="6">Loading parcels…</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p id="result-count" class="result-count"></p>
+        </section>
+      </main>
+    </div>
+
+    <dialog id="register-dialog" class="register-dialog" aria-labelledby="register-title">
+      <form id="register-form" class="dialog-form">
+        <div class="dialog-heading">
+          <div>
+            <p class="eyebrow">PARCEL DESK</p>
+            <h2 id="register-title">Register a parcel</h2>
+          </div>
+          <button id="close-dialog" class="icon-button" type="button" aria-label="Close">×</button>
+        </div>
+        <div class="dialog-fields">
+          <label for="student-name">Student name</label>
+          <input id="student-name" name="studentName" autocomplete="name" required />
+          <label for="student-number">Registration number</label>
+          <input id="student-number" name="studentRegistrationNumber" required />
+          <label for="student-email">Student email</label>
+          <input id="student-email" name="studentEmail" type="email" required />
+          <label for="courier-name">Courier</label>
+          <input id="courier-name" name="courierName" placeholder="For example, Delhivery" required />
+          <label for="parcel-description">Description <span class="optional-label">Optional</span></label>
+          <input id="parcel-description" name="description" placeholder="Short note to identify the parcel" />
+        </div>
+        <p id="register-message" class="form-message" role="alert" aria-live="polite"></p>
+        <div class="dialog-actions">
+          <button id="cancel-dialog" class="button button-quiet" type="button">Cancel</button>
+          <button id="save-parcel" class="button button-primary" type="submit">Save parcel</button>
+        </div>
+      </form>
+    </dialog>
+  </body>
+</html>
