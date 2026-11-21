@@ -6,6 +6,11 @@ const searchInput = document.querySelector("#parcel-search");
 const statusFilter = document.querySelector("#status-filter");
 const registerDialog = document.querySelector("#register-dialog");
 const registerForm = document.querySelector("#register-form");
+const accountDialog = document.querySelector("#account-dialog");
+const accountForm = document.querySelector("#account-form");
+const accountRole = document.querySelector("#account-role");
+const accountRegistrationLabel = document.querySelector("#account-registration-label");
+const accountRegistrationNumber = document.querySelector("#account-registration-number");
 let currentUser = null;
 let searchTimer;
 
@@ -66,6 +71,10 @@ const setProfile = (user) => {
   const isStaff = user.role === "ADMIN" || user.role === "EDITOR";
   document.querySelector("#register-button").hidden = !isStaff;
   document.querySelector("#sidebar-register").hidden = !isStaff;
+  document.querySelector("#sidebar-create-account").hidden = !isStaff;
+  accountRole.disabled = user.role === "EDITOR";
+  if (user.role === "EDITOR") accountRole.value = "VIEWER";
+  syncAccountRegistrationField();
   document.querySelector("#parcel-caption").textContent = user.role === "VIEWER"
     ? "Parcels associated with your student account."
     : "The latest updates from the parcel desk.";
@@ -178,10 +187,31 @@ const openRegisterDialog = () => {
   document.querySelector("#student-name").focus();
 };
 
+const syncAccountRegistrationField = () => {
+  const isStudent = accountRole.value === "VIEWER";
+  accountRegistrationLabel.hidden = !isStudent;
+  accountRegistrationNumber.hidden = !isStudent;
+  accountRegistrationNumber.required = isStudent;
+};
+
+const openAccountDialog = () => {
+  accountForm.reset();
+  accountRole.disabled = currentUser.role === "EDITOR";
+  if (currentUser.role === "EDITOR") accountRole.value = "VIEWER";
+  document.querySelector("#account-message").textContent = "";
+  syncAccountRegistrationField();
+  accountDialog.showModal();
+  document.querySelector("#account-name").focus();
+};
+
 document.querySelector("#register-button").addEventListener("click", openRegisterDialog);
 document.querySelector("#sidebar-register").addEventListener("click", openRegisterDialog);
 document.querySelector("#close-dialog").addEventListener("click", () => registerDialog.close());
 document.querySelector("#cancel-dialog").addEventListener("click", () => registerDialog.close());
+document.querySelector("#sidebar-create-account").addEventListener("click", openAccountDialog);
+document.querySelector("#close-account-dialog").addEventListener("click", () => accountDialog.close());
+document.querySelector("#cancel-account-dialog").addEventListener("click", () => accountDialog.close());
+accountRole.addEventListener("change", syncAccountRegistrationField);
 
 document.querySelector("#logout-button").addEventListener("click", () => {
   localStorage.removeItem("unicrateToken");
@@ -240,6 +270,27 @@ registerForm.addEventListener("submit", async (event) => {
     registerForm.reset();
     showNotice("Parcel registered successfully.", true);
     await loadDashboard();
+  } catch (error) {
+    message.textContent = error.message;
+  } finally {
+    submitButton.disabled = false;
+  }
+});
+
+accountForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const message = document.querySelector("#account-message");
+  const submitButton = document.querySelector("#save-account");
+  const account = Object.fromEntries(new FormData(accountForm).entries());
+  account.role = currentUser.role === "EDITOR" ? "VIEWER" : accountRole.value;
+  submitButton.disabled = true;
+  message.textContent = "";
+
+  try {
+    await request("/api/auth/register", { method: "POST", body: JSON.stringify(account) });
+    accountDialog.close();
+    accountForm.reset();
+    showNotice("Created " + account.role.toLowerCase() + " account for " + account.email + ".", true);
   } catch (error) {
     message.textContent = error.message;
   } finally {
