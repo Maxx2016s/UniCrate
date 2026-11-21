@@ -224,10 +224,22 @@ const login = async (req, res) => {
   }
 };
 
+// GET /api/auth/setup-status
+// Lets the sign-in page show first-admin setup only while no accounts exist.
+const getSetupStatus = async (req, res) => {
+  try {
+    const setupRequired = (await prisma.user.count()) === 0;
+    return res.status(200).json({ setupRequired });
+  } catch (error) {
+    console.error("Setup status error:", error.message);
+    return res.status(500).json({ message: "Unable to check account setup." });
+  }
+};
+
 // GET /api/auth/me
 // protect has already loaded the user (without password) into req.user
 const getMe = async (req, res) => {
   return res.status(200).json({ user: req.user });
 };
 
-module.exports = { register, login, getMe };
+module.exports = { register, login, getMe, getSetupStatus };
