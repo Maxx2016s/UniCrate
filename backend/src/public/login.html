@@ -54,8 +54,37 @@
           </form>
 
           <p class="login-support">Need an account? Ask your campus parcel desk.</p>
+          <button id="first-admin-button" class="button button-quiet button-wide setup-button" type="button" hidden>
+            Set up the first admin
+          </button>
         </div>
       </section>
     </main>
+
+    <dialog id="setup-dialog" class="register-dialog" aria-labelledby="setup-title">
+      <form id="setup-form" class="dialog-form">
+        <div class="dialog-heading">
+          <div>
+            <p class="eyebrow">FIRST TIME SETUP</p>
+            <h2 id="setup-title">Create the first admin</h2>
+          </div>
+          <button id="close-setup-dialog" class="icon-button" type="button" aria-label="Close">×</button>
+        </div>
+        <p class="dialog-note">This option is available only until the first UniCrate account is created.</p>
+        <div class="dialog-fields">
+          <label for="setup-name">Your name</label>
+          <input id="setup-name" name="name" autocomplete="name" required />
+          <label for="setup-email">Campus email</label>
+          <input id="setup-email" name="email" type="email" autocomplete="email" required />
+          <label for="setup-password">Password</label>
+          <input id="setup-password" name="password" type="password" autocomplete="new-password" minlength="6" required />
+        </div>
+        <p id="setup-message" class="form-message" role="alert" aria-live="polite"></p>
+        <div class="dialog-actions">
+          <button id="cancel-setup-dialog" class="button button-quiet" type="button">Cancel</button>
+          <button id="save-setup" class="button button-primary" type="submit">Create admin account</button>
+        </div>
+      </form>
+    </dialog>
   </body>
 </html>
