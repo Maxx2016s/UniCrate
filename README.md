@@ -37,13 +37,13 @@ UniCrate replaces traditional manual parcel registers with a digital platform wh
 | JWT | Authentication |
 | bcryptjs | Password hashing |
 | dotenv | Environment variable management |
-| HTML, CSS, JavaScript | Frontend (planned/under development) |
+| HTML, CSS, JavaScript | Responsive frontend served by Express |
 
 ## 👥 User Roles
 
 | Role | Permissions |
 |---|---|
-| ADMIN | Manage users, manage parcels, and access administrative operations |
+| ADMIN | Create accounts, assign roles, and manage parcels |
 | EDITOR | Register and manage parcels, and create VIEWER accounts |
 | VIEWER | View parcels associated with their own registration number |
 
@@ -103,6 +103,7 @@ Base URL:
 | Method | Endpoint | Description |
 |---|---|---|
 | POST | `/api/auth/register` | Register a user |
+| GET | `/api/auth/setup-status` | Check whether initial admin setup is needed |
 | POST | `/api/auth/login` | Authenticate a user |
 | GET | `/api/auth/me` | Get the logged-in user's details |
 
@@ -127,7 +128,11 @@ UniCrate/
 │
 ├── backend/
 │   ├── prisma/
-│   │   └── schema.prisma
+│   │   ├── schema.prisma
+│   │   └── seed.js
+│   │
+│   ├── test/
+│   │   └── core.test.js
 │   │
 │   ├── src/
 │   │   ├── config/
@@ -149,6 +154,14 @@ UniCrate/
 │   │   │   └── generateTrackingId.js
 │   │   │
 │   │   ├── public/
+│   │   │   ├── css/
+│   │   │   │   └── style.css
+│   │   │   ├── js/
+│   │   │   │   ├── dashboard.js
+│   │   │   │   └── login.js
+│   │   │   ├── dashboard.html
+│   │   │   ├── index.html
+│   │   │   └── login.html
 │   │   │
 │   │   └── index.js
 │   │
@@ -215,6 +228,14 @@ npm run db:generate
 npm run db:push
 ```
 
+### Optional: add demo data
+
+For a fuller dashboard demonstration, set SEED_DEMO_PASSWORD in backend/.env to a private password of at least 8 characters, then run npm run db:seed from the backend directory.
+
+The seed adds four fictional demo accounts and eight parcels using reserved .test email addresses. Run it only against the UniCrate demo database. It only adds missing demo records; it does not delete or replace existing users or parcels. The new demo accounts use the password from SEED_DEMO_PASSWORD.
+
+Run npm test from the backend directory for the local checks. They use mock requests and do not connect to Atlas.
+
 ### 7. Start the server
 
 ```bash
@@ -262,9 +283,13 @@ We aim to make UniCrate smarter and more efficient by introducing AI-powered cap
 
 ## 📌 Project Status
 
-**Backend development:** Core implementation completed; API integration and testing in progress.
+**Core features:** Sign in, account roles, parcel registration and search, collection tracking, student-specific parcel views, and the dashboard are implemented.
 
-**Frontend development:** Under development.
+**Database:** MongoDB Atlas connection and an optional demo-data seed script are configured. End-to-end checks against Atlas remain.
+
+**Testing:** Run npm test from the backend directory for basic role, parcel-privacy, and tracking-ID checks. These tests do not connect to Atlas.
+
+**Deployment:** Not configured.
 
 ---
 
