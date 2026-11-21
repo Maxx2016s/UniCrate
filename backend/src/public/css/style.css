@@ -274,3 +274,11 @@ input:focus, select:focus { border-color: var(--orange); box-shadow: 0 0 0 3px r
   .parcel-table th:last-child, .parcel-table td:last-child { padding-right: 17px; }
   .result-count { padding-right: 17px; padding-left: 17px; }
 }
+
+.dialog-note {
+  margin: 2px 0 10px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+.form-message-success { color: #257346; }
