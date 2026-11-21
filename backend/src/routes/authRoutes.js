@@ -37,6 +37,8 @@ const registerGate = async (req, res, next) => {
   }
 };
 
+
+
 // POST /api/auth/register
 router.post("/register", registerGate, register);
 
